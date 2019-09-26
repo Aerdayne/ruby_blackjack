@@ -7,7 +7,7 @@ class AutoTest < Test::Unit::TestCase
   # Tests the scenario in which a player draws 2 randm cards
   def test_value_two_in_hand
     50.times do
-      t = Table.new
+      t = Table.new 123
       t.deck.shuffle!
       2.times { t.player.hand.draw! }
       assert_includes 4..21, t.player.hand.calculate_value!
@@ -17,7 +17,7 @@ class AutoTest < Test::Unit::TestCase
   # Tests the scenario in which a player draws 3 random cards
   def test_value_three_in_hand
     50.times do
-      t = Table.new
+      t = Table.new 123
       t.deck.shuffle!
       3.times { t.player.hand.draw! }
       assert_includes 6..30, t.player.hand.calculate_value!
@@ -28,7 +28,7 @@ class AutoTest < Test::Unit::TestCase
   # then draws 1 more non-ace card
   def test_value_soft_hand
     50.times do
-      t = Table.new
+      t = Table.new 123
       t.deck.shuffle!
       t.player.hand.cards << t.deck.cards.delete(t.deck.cards.reject(&:ace?).pop)
       t.player.hand.cards << t.deck.cards.delete(t.deck.cards.select(&:ace?).pop)

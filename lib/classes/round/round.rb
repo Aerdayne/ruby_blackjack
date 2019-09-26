@@ -1,33 +1,32 @@
 # frozen_string_literal: true
 
+# :nodoc:
 class Round
   attr_accessor :table, :turn, :result
   def initialize(table)
     @table = table
     @turn = nil
-    @result = []
-    start
-    finish
+    @result = { player: [], dealer: [], winner: nil }
   end
 
   def start
+    @table.deck.shuffle!
     [@table.player, @table.dealer].each do |actor|
       actor.bet!
       2.times { actor.hit! }
     end
-    next_turn(PlayerTurn, %i[flip stand hit!])
   end
 
   def finish
-    @result << @table.player.flip.map(&:clone)
-    @result << @table.dealer.flip.map(&:clone)
+    @result[:player] = @table.player.hand.flip.map(&:clone)
+    @result[:dealer] = @table.dealer.hand.flip.map(&:clone)
     [@table.player, @table.dealer].each { |actor| actor.hand.reshuffle! }
     @result
   end
 
-  def next_turn(actor_turn, actions)
+  def next_turn(actor_turn)
     @turn = actor_turn.new(self)
-    @turn.start!(actions)
+    @turn.start!
   end
 
   def action_call(actor, action)

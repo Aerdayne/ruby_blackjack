@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Hand limit exception
-class HandException < StandardError
+# nodoc
+class HandException < CustomException
   def message
     'You can not hit with 3 cards!'
   end

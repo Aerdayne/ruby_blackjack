@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Card class
+# :nodoc:
 class Card
   attr_accessor :suit, :rank, :value
 
   def initialize(suit, rank, value)
-    self.suit = suit
-    self.rank = rank
-    self.value = value
+    @suit = suit
+    @rank = rank
+    @value = value
   end
 
   def ace?

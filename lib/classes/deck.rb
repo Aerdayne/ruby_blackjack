@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+# :nodoc:
 class Deck
   attr_accessor :suits, :ranks, :cards
 
   def initialize
-    self.suits = %i[clubs diamonds hearts spades]
-    self.ranks = { ace: 0, king: 10, queen: 10, jack: 10, ten: 10, nine: 9, eight: 8, seven: 7,
-                   six: 6, five: 5, four: 4, three: 3, two: 2 }
-    self.cards = []
+    @suits = %i[clubs diamonds hearts spades]
+    @ranks = { ace: 0, king: 10, queen: 10, jack: 10,
+               ten: 10, nine: 9, eight: 8, seven: 7,
+               six: 6, five: 5, four: 4, three: 3, two: 2 }
+    @cards = []
     build!
   end
 
@@ -16,6 +18,8 @@ class Deck
   end
 
   def draw!
+    raise DrainedException if @cards.pop.nil?
+
     @cards.pop
   end
 

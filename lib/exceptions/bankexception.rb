@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class BankException < StandardError
+# :nodoc:
+class BankException < CustomException
   def message
     'Your bank is empty.'
   end

@@ -1,23 +1,31 @@
 # frozen_string_literal: true
 
+# :nodoc:
 class Hand
   attr_accessor :cards, :total_value, :table
+
   def initialize(table)
-    self.table = table
-    self.cards = []
-    self.total_value = 0
+    @table = table
+    @cards = []
+    @total_value = 0
+    @flipped = false
+  end
+
+  def flipped?
+    @flipped == true
   end
 
   def draw!
-    @total_value = 0
     @cards << table.deck.draw!
   end
 
   def flip
+    @flipped = true
     [@cards, calculate_value!]
   end
 
   def reshuffle!
+    @flipped = false
     @table.deck.cards << @cards.pop until @cards.empty?
   end
 
@@ -27,11 +35,7 @@ class Hand
       @total_value += card.value
     end
     @cards.select(&:ace?).each do
-      @total_value += if @total_value + 11 > 21
-                        1
-                      else
-                        11
-                      end
+      @total_value += @total_value + 11 > 21 ? 1 : 11
     end
     @total_value
   end
