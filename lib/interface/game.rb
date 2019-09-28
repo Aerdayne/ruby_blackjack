@@ -30,13 +30,13 @@ class Game
     raise CustomException, 'Invalid action!' unless input.to_i.between?(1, actions.length)
 
     @actions[input.to_i][1]
-  rescue CustomException => e
+  rescue DrainedException => e
     puts e.message
     retry
   end
 
   def display_bank
-    puts "Your bank: #{@table.player.bank}\nDealers bank: #{@table.dealer.bank}\nBet: #{@table.bank}\n"
+    puts "Your bank: #{@table.bank.balance(@table.player)}\nDealers bank: #{@table.bank.balance(@table.dealer)}\nBet: #{@table.bank.balance}\n"
   end
 
   def start_round
