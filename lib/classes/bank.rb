@@ -1,6 +1,9 @@
 # :nodoc:
 class Bank
   attr_accessor :player_balance, :dealer_balance
+
+  BET = 10
+
   def initialize(player, dealer)
     raise CustomException, 'Wrong argument type' unless [player, dealer].all?(Player)
 
@@ -16,13 +19,13 @@ class Bank
 
   def accept_bet(player, sum)
     @accounts[player].withdraw!(sum)
-    @balance.deposit!(10)
+    @balance.deposit!(BET)
   end
 
   def dispense_bets(winner = nil)
     if winner.nil?
       @accounts.reject{|k|k==:table}.each_value do |balance|
-        balance.deposit!(10)
+        balance.deposit!(BET)
       end
     else
       @accounts[winner].deposit!(@balance.balance)

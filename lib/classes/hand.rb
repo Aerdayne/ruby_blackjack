@@ -37,6 +37,7 @@ class Hand
     @cards.select(&:ace?).each do
       @total_value += @total_value + 11 > 21 ? 1 : 11
     end
+    @total_value -= 10 if @cards.select(&:ace?).length > 1 && @total_value > 21
     @total_value
   end
 end

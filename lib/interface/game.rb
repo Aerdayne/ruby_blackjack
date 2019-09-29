@@ -18,6 +18,9 @@ class Game
 
       action.call
     end
+  rescue DrainedException, BankException => e
+    puts e.message
+    retry
   end
 
   def action_choice(actions)
@@ -30,7 +33,7 @@ class Game
     raise CustomException, 'Invalid action!' unless input.to_i.between?(1, actions.length)
 
     @actions[input.to_i][1]
-  rescue DrainedException => e
+  rescue CustomException => e
     puts e.message
     retry
   end
