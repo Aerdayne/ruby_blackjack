@@ -9,11 +9,13 @@ class Table
     @deck = Deck.new
     @player = Player.new(self)
     @dealer = Player.new(self)
-    @bank = 0
+    @bank = Bank.new(@player, @dealer)
     @round = nil
   end
 
   def start_round
+    raise DrainedException if @deck.cards.empty?
+  
     @round = Round.new(self)
     @round.start
   end
@@ -22,24 +24,24 @@ class Table
     pscore = 21 - @round.result[:player][1]
     dscore = 21 - @round.result[:dealer][1]
     if pscore.negative? && dscore.negative? || pscore == dscore
-      @player.bank += 10
-      @dealer.bank += 10
-      winner = 'A tie'
+      winner = nil
     elsif pscore.negative?
-      @dealer.bank += @bank
-      winner = 'Dealer wins'
+      winner = @dealer
     elsif dscore.negative?
-      @player.bank += @bank
-      winner = 'Player wins'
+      winner = @player
     elsif pscore > dscore
-      @dealer.bank += @bank
-      winner = 'Dealer wins'
+      winner = @dealer
     elsif dscore > pscore
-      @player.bank += @bank
-      winner = 'Player wins'
+      winner = @player
     end
-    @bank = 0
-    @round.result[:winner] = winner
+    @bank.dispense_bets(winner)
+    if winner == @player
+      @round.result[:winner] = 'Player'
+    elsif winner == @dealer
+      @round.result[:winner] = 'Dealer'
+    else
+      @round.result[:winner] = 'Nobody'
+    end
     @round.result
   end
 end

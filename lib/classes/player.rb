@@ -2,19 +2,15 @@
 
 # :nodoc:
 class Player
-  attr_accessor :table, :hand, :bank, :actions
+  attr_accessor :table, :hand, :actions
 
   def initialize(table)
     @table = table
     @hand = Hand.new(table)
-    @bank = 100
   end
 
   def bet!
-    raise BankException if @bank.zero?
-
-    @bank -= 10
-    @table.bank += 10
+    @table.bank.accept_bet(self, 10)
   end
 
   def stand

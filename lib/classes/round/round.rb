@@ -15,6 +15,7 @@ class Round
       actor.bet!
       2.times { actor.hit! }
     end
+    @table.player.hand.cards
   end
 
   def finish

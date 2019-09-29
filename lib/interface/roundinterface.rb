@@ -19,12 +19,16 @@ class RoundInterface < Game
       end
       puts "Total value: #{outcome[1]}"
     end
-    puts @result[:winner]
+    puts "#{@result[:winner]} wins!"
   end
 
   def new_round
-    @game.table.start_round
+    @player_cards = @game.table.start_round
     @game.display_bank
+    puts "\nYour hand:"
+    @player_cards.each do |card|
+      puts "#{card.rank.to_s.capitalize} of #{card.suit.to_s.capitalize}"
+    end
     until @game.table.player.hand.flipped?
       action = @game.table.round.next_turn(PlayerTurn)
       puts "Player #{action}s"
@@ -32,6 +36,10 @@ class RoundInterface < Game
 
       action = @game.table.round.next_turn(DealerTurn)
       puts "Dealer #{action}s"
+      puts "\nYour hand:"
+        @player_cards.each do |card|
+          puts "#{card.rank.to_s.capitalize} of #{card.suit.to_s.capitalize}"
+      end
     end
     @game.table.round.finish
     @game.table.round_result

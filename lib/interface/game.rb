@@ -18,6 +18,9 @@ class Game
 
       action.call
     end
+  rescue DrainedException, BankException => e
+    puts e.message
+    retry
   end
 
   def action_choice(actions)
@@ -36,7 +39,7 @@ class Game
   end
 
   def display_bank
-    puts "Your bank: #{@table.player.bank}\nDealers bank: #{@table.dealer.bank}\nBet: #{@table.bank}\n"
+    puts "Your bank: #{@table.bank.balance(@table.player)}\nDealers bank: #{@table.bank.balance(@table.dealer)}\nBet: #{@table.bank.balance}\n"
   end
 
   def start_round

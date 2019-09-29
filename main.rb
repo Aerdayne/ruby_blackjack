@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative './lib/modules/validation.rb'
+
 require_relative './lib/classes/card.rb'
 require_relative './lib/classes/deck.rb'
 require_relative './lib/classes/hand.rb'
 require_relative './lib/classes/player.rb'
+require_relative './lib/classes/bank.rb'
+require_relative './lib/classes/balance.rb'
 require_relative './lib/classes/table.rb'
 
 require_relative './lib/classes/round/round.rb'
@@ -17,6 +21,7 @@ require_relative './lib/exceptions/handexception.rb'
 
 require_relative './lib/interface/game.rb'
 require_relative './lib/interface/roundinterface.rb'
+
 
 game = Game.new
 game.start
