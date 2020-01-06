@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-# :nodoc:
+# The main interface class
+#   @table           - Table object
+#   @round_interface - RoundInterface object
+#   @actions         - Hash that maps action numbers to respective class methods
 class Game
-  attr_accessor :calls, :outputs, :table, :round_interface
+  attr_accessor :table, :round_interface
+
   def initialize
     @table = Table.new(self)
     @round_interface = RoundInterface.new(self)
@@ -11,6 +15,7 @@ class Game
                  3 => ['Exit', :exit] }
   end
 
+  # Main user interaction loop
   def start
     loop do
       action = action_choice(@actions)
@@ -23,6 +28,8 @@ class Game
     retry
   end
 
+  # Invoked when an action from the user is required.
+  # Returns a respective method name extracted from @actions
   def action_choice(actions)
     puts "\nChoose an action:"
     actions.each do |key, value|
@@ -30,13 +37,17 @@ class Game
     end
     input = gets.chomp
 
-    raise CustomException, 'Invalid action!' unless input.to_i.between?(1, actions.length)
+    unless input.to_i.between?(1, actions.length)
+      raise CustomException, 'Invalid action!'
+    end
 
     @actions[input.to_i][1]
   rescue CustomException => e
     puts e.message
     retry
   end
+
+  protected
 
   def display_bank
     puts "Your bank: #{@table.bank.balance(@table.player)}\nDealers bank: #{@table.bank.balance(@table.dealer)}\nBet: #{@table.bank.balance}\n"

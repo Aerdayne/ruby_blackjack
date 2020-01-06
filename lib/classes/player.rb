@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-# :nodoc:
+# Actor (both player and dealer) logic class
+#   @table - Table parent object
+#   @hand  - Hand object
 class Player
-  attr_accessor :table, :hand, :actions
+  attr_accessor :table, :hand
 
   def initialize(table)
     @table = table

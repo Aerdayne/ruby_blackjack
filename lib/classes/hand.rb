@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-# :nodoc:
+# Hand logic class
+#   @table       - Table parent object
+#   @cards       - Array of Card objects
+#   @total_value - Calculated total hand value
+#   @flipped     - Boolean status
 class Hand
   attr_accessor :cards, :total_value, :table
 

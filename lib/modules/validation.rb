@@ -6,7 +6,9 @@ module Validation
     attr_reader :validators
 
     def validate(attribute, type, *args)
-      raise CustomException, 'Attribute to be validated should be a symbol!' unless [attribute, type].all?(Symbol)
+      unless [attribute, type].all?(Symbol)
+        raise CustomException, 'Attribute to be validated should be a symbol!'
+      end
 
       @validators ||= []
       @validators << { attribute_name: attribute, validation_call: type, arguments: args }
@@ -30,7 +32,9 @@ module Validation
 
     def includes(attribute, value, args)
       range = args[0]
-      raise CustomException, "#{attribute} should be included in #{range}" unless range.include?(value)
+      unless range.include?(value)
+        raise CustomException, "#{attribute} should be included in #{range}"
+      end
     end
   end
 
