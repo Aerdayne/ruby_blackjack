@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
-# :nodoc:
+# Main facade class that houses all other entities
+#   @game   - Game parent object
+#   @deck   - Deck object
+#   @player - Player object
+#   @dealer - Player object
+#   @bank   - Bank object
+#   @round  - Round object
 class Table
   attr_accessor :deck, :player, :dealer, :bank, :game, :round
 
@@ -15,11 +21,23 @@ class Table
 
   def start_round
     raise DrainedException if @deck.cards.empty?
-  
+
     @round = Round.new(self)
     @round.start
   end
 
+  def finish_round
+    @round.finish
+  end
+
+  # User interface endpoint, gets passed either PlayerTurn or DealerTurn class
+  # from RoundInterface instance.
+  def round_action(turn_class)
+    @round.next_turn(turn_class)
+  end
+
+  # Calculates the round outcome and determines the winner.
+  # Returns an altered @round.result hash.
   def round_result
     pscore = 21 - @round.result[:player][1]
     dscore = 21 - @round.result[:dealer][1]
@@ -35,13 +53,13 @@ class Table
       winner = @player
     end
     @bank.dispense_bets(winner)
-    if winner == @player
-      @round.result[:winner] = 'Player'
-    elsif winner == @dealer
-      @round.result[:winner] = 'Dealer'
-    else
-      @round.result[:winner] = 'Nobody'
-    end
+    @round.result[:winner] = if winner == @player
+                               'Player'
+                             elsif winner == @dealer
+                               'Dealer'
+                             else
+                               'Nobody'
+                             end
     @round.result
   end
 end

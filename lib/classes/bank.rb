@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # :nodoc:
 class Bank
   attr_accessor :player_balance, :dealer_balance
@@ -5,7 +7,9 @@ class Bank
   BET = 10
 
   def initialize(player, dealer)
-    raise CustomException, 'Wrong argument type' unless [player, dealer].all?(Player)
+    unless [player, dealer].all?(Player)
+      raise CustomException, 'Wrong argument type'
+    end
 
     @player_balance = Balance.new(100)
     @dealer_balance = Balance.new(100)
@@ -24,7 +28,7 @@ class Bank
 
   def dispense_bets(winner = nil)
     if winner.nil?
-      @accounts.reject{|k|k==:table}.each_value do |balance|
+      @accounts.reject { |k| k == :table }.each_value do |balance|
         balance.deposit!(BET)
       end
     else

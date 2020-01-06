@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-# :nodoc:
+# Card logic class
+#   @suit  - card suit
+#   @rank  - card rank
+#   @value - card value
 class Card
   include Validation
 

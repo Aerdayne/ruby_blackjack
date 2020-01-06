@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# :nodoc:
+# Deck logic class
+#   @cards - Array of Card objects
 class Deck
-  attr_accessor :suits, :ranks, :cards
+  attr_accessor :cards
 
   def initialize
     @cards = []
