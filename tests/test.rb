@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../main.rb'
+require_relative '../lib/blackjack.rb'
 require 'test/unit'
 
 class AutoTest < Test::Unit::TestCase
@@ -35,6 +35,20 @@ class AutoTest < Test::Unit::TestCase
       assert_includes 13..21, t.player.hand.calculate_value!
       t.player.hand.cards << t.deck.cards.delete(t.deck.cards.reject(&:ace?).pop)
       assert_includes 11..21, t.player.hand.calculate_value!
+    end
+  end
+
+  # Tests the scenario in which a player draws 1 non-ace card and 1 ace,
+  # then draws one more ace card.
+  def test_value_recalculate_ace_values
+    50.times do
+      t = Table.new 123
+      t.deck.shuffle!
+      t.player.hand.cards << t.deck.cards.delete(t.deck.cards.reject(&:ace?).pop)
+      t.player.hand.cards << t.deck.cards.delete(t.deck.cards.select(&:ace?).pop)
+      assert_includes 13..21, t.player.hand.calculate_value!
+      t.player.hand.cards << t.deck.cards.delete(t.deck.cards.select(&:ace?).pop)
+      assert_includes 12..21, t.player.hand.calculate_value!
     end
   end
 end
